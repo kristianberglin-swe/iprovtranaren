@@ -666,6 +666,15 @@ body:not(.visualHome) [class*="source"]{
   font-size:13px;
 }
 
+
+.seriesLine{
+ margin-top:18px;padding:17px 22px;display:inline-block;min-width:min(560px,90%);
+ box-sizing:border-box;background:rgba(31,37,27,.92);color:#f2f0d9;
+ border:1px solid #818755;border-radius:11px;
+ box-shadow:0 4px 0 #171c15,0 9px 18px #0005,inset 1px 1px 0 #ffffff20;
+ font-size:clamp(23px,2.5vw,32px);font-weight:900;letter-spacing:1px;text-align:center
+}
+
 </style></head>
 <body><header><div class="head"><div class="brand">Iprov tränaren</div><div class="count" id="count">Välj område</div></div></header><main id="app"></main>
 <script>
@@ -756,7 +765,10 @@ function beginWords(){
  begin(shuffle(qs),'Ordförståelse');
 }
 function beginSeries(){
- let qs=[];['easy','medium','hard'].forEach(l=>{let n=l==='hard'?40:24;for(let i=0;i<n;i++){let q=seriesQ(l,i);qs.push({id:q.id,group:'Talserier',subtype:'Talserier',prompt:q.text,options:q.opts,correct:q.correct,mode:'text'})}});
+ let qs=[];['easy','medium','hard'].forEach(l=>{let n=l==='hard'?40:24;for(let i=0;i<n;i++){let q=seriesQ(l,i);
+let seqText=Array.isArray(q.seq)?q.seq.join(', '):(q.seq||'');
+let fullPrompt=seqText?`Vilket tal ska stå på nästa plats?<div class="seriesLine">${seqText}, ?</div>`:q.text;
+qs.push({id:q.id,group:'Talserier',subtype:'Talserier',prompt:fullPrompt,options:q.opts,correct:q.correct,mode:'text'})}});
  VERIFIED_SERIES.forEach(q=>qs.push({
    id:q.id,group:'Talserier',subtype:q.source.startsWith('UCEED')?'UCEED':'Verifierad talserie',
    source:q.source,prompt:q.prompt,options:q.options,correct:q.correct,mode:'text'
